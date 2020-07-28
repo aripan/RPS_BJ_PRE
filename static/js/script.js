@@ -10,13 +10,9 @@ let humanChoice, botChoice;
 
 function rpsGame(yourChoice) {
   humanChoice = yourChoice.id;
-
   botChoice = numberToChoice(randToRpsInt());
-
-  results = decideWinner(humanChoice, botChoice); //[0, 1] human lost | bot won
-
-  message = finalMessage(results); //('message': 'You won!', 'color':"green")
-
+  results = decideWinner(humanChoice, botChoice);
+  message = finalMessage(results);
   rpsFrontEnd(humanChoice, botChoice, message);
 }
 
