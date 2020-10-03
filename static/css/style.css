@@ -9,7 +9,7 @@ body {
 }
 
 section {
-  height: auto;
+  height: 100vh;
 
   /* background-color: rgb(39, 41, 68); */
   background: linear-gradient(to right, #7c8388, #313f4d);
