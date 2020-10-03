@@ -204,6 +204,7 @@ div.fadeIn {
   }
 
   .winner {
+    margin-bottom: -20px;
     font-size: 1em;
   }
 
@@ -226,10 +227,10 @@ div.fadeIn {
     width: 100px;
     height: 100px;
   }
-  .options {
+  /* .options {
     display: flex;
     flex-direction: column;
-  }
+  } */
 
   .options button {
     margin: 5px 0;
@@ -240,9 +241,10 @@ div.fadeIn {
   }
 
   .match {
-    top: 60%;
+    top: 50%;
   }
 }
+
 /* GAME 2 */
 h2,
 h3 {
