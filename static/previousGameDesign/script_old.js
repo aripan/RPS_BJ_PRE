@@ -1,151 +1,117 @@
-const hitSound = new Audio("static/sounds/swish.m4a");
-const winSound = new Audio("static/sounds/cash.mp3");
-const lossSound = new Audio("static/sounds/aww.mp3");
-
 //! Game 1
 
-const game = () => {
-  let pScore = 0;
-  let cScore = 0;
-
-  //Start the Game
-  const startGame = () => {
-    const playBtn = document.querySelector(".intro button");
-    const introScreen = document.querySelector(".intro");
-    const match = document.querySelector(".match");
-
-    playBtn.addEventListener("click", () => {
-      introScreen.classList.add("fadeOut");
-      match.classList.add("fadeIn");
-    });
-  };
-
-  //Play Match
-  const playMatch = () => {
-    const options = document.querySelectorAll(".options button");
-    const playerHand = document.querySelector(".player-hand");
-    const computerHand = document.querySelector(".computer-hand");
-    const hands = document.querySelectorAll(".hands img");
-
-    hands.forEach((hand) => {
-      hand.addEventListener("animationend", function () {
-        this.style.animation = "";
-      });
-    });
-
-    //Computer Options
-    const computerOptions = ["rock", "paper", "scissors"];
-
-    options.forEach((option) => {
-      option.addEventListener("click", function () {
-        hitSound.play();
-        //Computer Choice
-        const computerNumber = Math.floor(Math.random() * 3);
-        const computerChoice = computerOptions[computerNumber];
-
-        setTimeout(() => {
-          //Here is where we call compare hands
-          compareHands(this.textContent, computerChoice);
-          //Update Images
-          playerHand.src = `./static/images/${this.textContent}.png`;
-          computerHand.src = `./static/images/${computerChoice}.png`;
-        }, 2000);
-        //Animation
-        playerHand.style.animation = "shakePlayer 2s ease";
-        computerHand.style.animation = "shakeComputer 2s ease";
-      });
-    });
-  };
-
-  const updateScore = () => {
-    const playerScore = document.querySelector(".player-score p");
-    const computerScore = document.querySelector(".computer-score p");
-    playerScore.textContent = pScore;
-    computerScore.textContent = cScore;
-  };
-
-  const compareHands = (playerChoice, computerChoice) => {
-    //Update Text
-    const winner = document.querySelector(".winner");
-
-    //Checking for a tie
-    if (playerChoice === computerChoice) {
-      winner.textContent = "It is a tie";
-
-      return;
-    }
-    //Check for Rock
-    if (playerChoice === "rock") {
-      if (computerChoice === "scissors") {
-        winner.textContent = "You are a Winner";
-        pScore++;
-        updateScore();
-        winSound.play();
-        return;
-      } else {
-        winner.textContent = "Sorry better luck next time";
-        cScore++;
-        updateScore();
-        lossSound.play();
-        return;
-      }
-    }
-    //Check for Paper
-    if (playerChoice === "paper") {
-      if (computerChoice === "scissors") {
-        winner.textContent = "Sorry better luck next time";
-        cScore++;
-        updateScore();
-        lossSound.play();
-        return;
-      } else {
-        winner.textContent = "You are a Winner";
-        pScore++;
-        updateScore();
-        winSound.play();
-        return;
-      }
-    }
-    //Check for Scissors
-    if (playerChoice === "scissors") {
-      if (computerChoice === "rock") {
-        winner.textContent = "Sorry better luck next time";
-        cScore++;
-        updateScore();
-        lossSound.play();
-        return;
-      } else {
-        winner.textContent = "You are a Winner";
-        pScore++;
-        updateScore();
-        winSound.play();
-        return;
-      }
-    }
-  };
-
-  function tryAgain() {
-    const nextRound = document.getElementById("next-round");
-
-    //Set the hands to rock again
-    nextRound.addEventListener("click", () => {
-      const playerHand = document.querySelector(".player-hand");
-      const computerHand = document.querySelector(".computer-hand");
-
-      playerHand.src = `./static/images/rock.png`;
-      computerHand.src = `./static/images/rock.png`;
-    });
-  }
-
-  //Is call all the inner function
-
-  startGame();
-  playMatch();
-  tryAgain();
+let scores = {
+  winner: 0,
+  losser: 0,
+  tied: 0,
 };
 
-//start the game function
-game();
+let humanChoice, botChoice;
+
+function rpsGame(yourChoice) {
+  humanChoice = yourChoice.id;
+  botChoice = numberToChoice(randToRpsInt());
+  results = decideWinner(humanChoice, botChoice);
+  message = finalMessage(results);
+  rpsFrontEnd(humanChoice, botChoice, message);
+}
+
+function randToRpsInt() {
+  return Math.floor(Math.random() * 3);
+}
+
+function numberToChoice(number) {
+  return ["rock", "paper", "scissor"][number];
+}
+
+function decideWinner(yourChoice, computerChoice) {
+  let rpsDatabase = {
+    rock: { scissor: 1, rock: 0.5, paper: 0 },
+    paper: { scissor: 0, rock: 1, paper: 0.5 },
+    scissor: { scissor: 0.5, rock: 0, paper: 1 },
+  };
+
+  let yourScore = rpsDatabase[yourChoice][computerChoice];
+  let computerScore = rpsDatabase[computerChoice][yourChoice];
+
+  return [yourScore, computerScore];
+}
+
+function finalMessage([yourScore]) {
+  if (yourScore === 0) {
+    scores["losser"]++;
+    return { message: "You Lost!", color: "red" };
+  } else if (yourScore === 0.5) {
+    scores["tied"]++;
+    return { message: "You tied!", color: "yellow" };
+  } else {
+    scores["winner"]++;
+    return { message: "You won", color: "green" };
+  }
+}
+
+function rpsFrontEnd(humanImageChoice, botImageChoice, finalMessage) {
+  let imagesDatabase = {
+    rock: document.getElementById("rock").src,
+    paper: document.getElementById("paper").src,
+    scissor: document.getElementById("scissor").src,
+  };
+
+  //? Let remove all the images
+  document.getElementById("rock").remove();
+  document.getElementById("paper").remove();
+  document.getElementById("scissor").remove();
+
+  let humanDiv = document.createElement("span");
+  let messageDiv = document.createElement("span");
+  let botDiv = document.createElement("span");
+
+  humanDiv.innerHTML = `<img src=${imagesDatabase[humanImageChoice]} style= "width:150; height:150; margin:1rem; box-shadow: 0 10px 50px rgba(37, 50, 233, 1);">`;
+  messageDiv.innerHTML = `<h1 style= "color: ${finalMessage["color"]}; display: inline-block; font-size: 4rem; width:400; height:auto;"> ${finalMessage["message"]}</h1>`;
+  botDiv.innerHTML = ` <img src=${imagesDatabase[botImageChoice]} style= "width:150; height:150; margin:1rem; box-shadow: 0 10px 50px rgba(243, 38, 24, 1);">`;
+
+  document.getElementById("flex-box-rps-div").appendChild(humanDiv);
+  document.getElementById("flex-box-rps-div").appendChild(messageDiv);
+  document.getElementById("flex-box-rps-div").appendChild(botDiv);
+
+  document.querySelector("#winner").textContent = scores["winner"];
+  document.querySelector("#losser").textContent = scores["losser"];
+  document.querySelector("#tied").textContent = scores["tied"];
+}
+
+document.querySelector("#play-again").addEventListener("click", tryAgain);
+
+function tryAgain() {
+  document.getElementById("flex-box-rps-div").textContent = "";
+
+  let rock = document.createElement("img");
+  rock.src =
+    "https://www.hoekhavelte.nl/wp-content/uploads/2017/05/Beach-Pebbles-Zwart-50-70-Droog.jpg";
+  rock.setAttribute("id", "rock");
+  rock.setAttribute("onclick", "rpsGame(this)");
+  rock.style.height = "150";
+  rock.style.width = "150";
+
+  let paper = document.createElement("img");
+  paper.src =
+    "http://www.paperduke.com/wp-content/uploads/2017/06/Free-Printable-Notebook-Paper-e1497490624975.jpg";
+  paper.setAttribute("id", "paper");
+  paper.setAttribute("onclick", "rpsGame(this)");
+  paper.style.height = "150";
+  paper.style.width = "150";
+
+  let scissor = document.createElement("img");
+  scissor.src =
+    "https://clipartion.com/wp-content/uploads/2015/10/scissors-clipart-school-pinterest.jpg";
+  scissor.setAttribute("id", "scissor");
+  scissor.setAttribute("onclick", "rpsGame(this)");
+  scissor.style.height = "150";
+  scissor.style.width = "150";
+
+  document.querySelector("#flex-box-rps-div").appendChild(rock);
+  document.querySelector("#flex-box-rps-div").appendChild(paper);
+  document.querySelector("#flex-box-rps-div").appendChild(scissor);
+}
 
 //! Game 2
 
@@ -159,15 +125,15 @@ let blackjackGame = {
   },
   cards: ["2", "3", "4", "5", "6", "7", "8", "9", "10", "K", "J", "Q", "A"],
   cardsMap: {
-    2: 2,
-    3: 3,
-    4: 4,
-    5: 5,
-    6: 6,
-    7: 7,
-    8: 8,
-    9: 9,
-    10: 10,
+    "2": 2,
+    "3": 3,
+    "4": 4,
+    "5": 5,
+    "6": 6,
+    "7": 7,
+    "8": 8,
+    "9": 9,
+    "10": 10,
     K: 10,
     J: 10,
     Q: 10,
@@ -182,6 +148,10 @@ let blackjackGame = {
 
 const YOU = blackjackGame["you"];
 const DEALER = blackjackGame["dealer"];
+
+const hitSound = new Audio("static/sounds/swish.m4a");
+const winSound = new Audio("static/sounds/cash.mp3");
+const lossSound = new Audio("static/sounds/aww.mp3");
 
 document
   .querySelector("#blackjack-hit-button")

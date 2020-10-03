@@ -21,47 +21,53 @@
     <br />
     <!-- Game 1 -->
     <div class="container-1">
-      <h2>Game 1: Rock, Paper and Scissor</h2>
-      <section class="game">
-        <div class="score">
-          <div class="player-score">
-            <h2>Player</h2>
-            <p>0</p>
-          </div>
-          <div class="computer-score">
-            <h2>Computer</h2>
-            <p>0</p>
-          </div>
-        </div>
-
-        <div class="intro">
-          <h1>Rock Paper and Scissors</h1>
-          <button>Let's Play</button>
-        </div>
-
-        <div class="match fadeOut">
-          <h2 class="winner">Choose an option</h2>
-
-          <div class="hands">
-            <img class="player-hand" src="./static/images/rock.png" alt="" />
-            <img class="computer-hand" src="./static/images/rock.png" alt="" />
-          </div>
-
-          <div class="options">
-            <button class="rock">rock</button>
-            <button class="paper">paper</button>
-            <button class="scissors">scissors</button>
-          </div>
-          <br />
-          <div class="next">
-            <button id="next-round" class="gradient-button">
-              Set the Hands
-            </button>
-          </div>
-        </div>
-      </section>
+      <h2>Game 1: Rock, Paper, Scissor</h2>
+      <div class="flex-box-rps" id="flex-box-rps-div">
+        <img
+          src="https://cdn.iconscout.com/icon/free/png-256/stone-12-449919.png"
+          alt="rock"
+          id="rock"
+          style="width: 150; height: 150"
+          onclick="rpsGame(this)"
+        />
+        <img
+          src="https://images.onlinelabels.com/images/clip-art/nexxuz/nexxuz_Loose_Leaf_Paper.png"
+          alt="paper"
+          id="paper"
+          style="width: 150; height: 150"
+          onclick="rpsGame(this)"
+        />
+        <img
+          src="https://maxcdn.icons8.com/Share/icon/Healthcare/scissors1600.png"
+          alt="scissor"
+          id="scissor"
+          style="width: 150; height: 150"
+          onclick="rpsGame(this)"
+        />
+      </div>
+      <div class="tips">
+        <br />
+        <h3>Rock beats scissor</h3>
+        <h3>Paper beats rock</h3>
+        <h3>Scissor beats paper</h3>
+        <br />
+      </div>
+      <div class="table-row">
+        <table>
+          <tr>
+            <th>Wins</th>
+            <th>Losses</th>
+            <th>Tied</th>
+          </tr>
+          <tr>
+            <td><span id="winner">0</span></td>
+            <td><span id="losser">0</span></td>
+            <td><span id="tied">0</span></td>
+          </tr>
+        </table>
+        <button class="gradient-button" id="play-again">Try Again</button>
+      </div>
     </div>
-
     <br />
     <br />
 
