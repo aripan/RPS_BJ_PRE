@@ -11,11 +11,13 @@ const game = () => {
   //Start the Game
   const startGame = () => {
     const playBtn = document.querySelector(".intro button");
+    const scoreBoard = document.querySelector(".score");
     const introScreen = document.querySelector(".intro");
     const match = document.querySelector(".match");
 
     playBtn.addEventListener("click", () => {
       introScreen.classList.add("fadeOut");
+      scoreBoard.classList.add("fadeIn");
       match.classList.add("fadeIn");
     });
   };

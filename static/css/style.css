@@ -26,6 +26,7 @@ section {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  transition: opacity 0.5s ease;
 }
 .score h2 {
   font-size: 1.5em;
@@ -42,7 +43,7 @@ section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  /* justify-content: space-around; */
   transition: opacity 0.5s ease;
 }
 
@@ -203,8 +204,7 @@ div.fadeIn {
   }
 
   .winner {
-    margin-top: 15px;
-    font-size: 1.2em;
+    font-size: 1em;
   }
 }
 
@@ -232,8 +232,7 @@ div.fadeIn {
   }
 
   .winner {
-    margin-top: 15px;
-    font-size: 1.2em;
+    font-size: 1em;
   }
 }
 
