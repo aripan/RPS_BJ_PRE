@@ -208,7 +208,7 @@ div.fadeIn {
   }
 
   .match {
-    position: relative;
+    top: 60%;
   }
 }
 
@@ -240,10 +240,9 @@ div.fadeIn {
   }
 
   .match {
-    position: relative;
+    top: 60%;
   }
 }
-
 /* GAME 2 */
 h2,
 h3 {
